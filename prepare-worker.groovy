@@ -1,7 +1,18 @@
+properties([
+    parameters([
+        string(defaultValue: '', description: 'Input node IP', name: 'SSHNODE', trim: true)
+        ])
+    ])
 node {
+    withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-master', keyFileVariable: 'SSHKEY', passphraseVariable: '', usernameVariable: 'SSHUSERNAME')]) {
     stage("Initialize") {
-       withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-master', keyFileVariable: 'SSHKEY', passphraseVariable: '', usernameVariable: 'SSHUSERNAME')]) {
-            sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@64.225.18.217 yum install epel-release -y "
+        sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@$params.SSHNODE yum install epel-release -y "
+        }
+    stage("Install Java") {
+        sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@$params.SSHNODE yum install java-1.8.0-openjdk-devel -y "
+        }
+    stage("Install Git") {
+        sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@$params.SSHNODE yum install git -y "
         }
     }
 }
