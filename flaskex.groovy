@@ -5,9 +5,6 @@ properties([
     ])
 node {
     withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-master', keyFileVariable: 'SSHKEY', passphraseVariable: '', usernameVariable: 'SSHUSERNAME')]) {
-    stage("Update") {
-        sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@$params.SSHNODE yum update -y "
-        }
     stage("Initialize") {
         sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@$params.SSHNODE yum install epel-release -y "
         }
@@ -20,14 +17,11 @@ node {
     stage("Git Clone") {
         sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@$params.SSHNODE git clone https://github.com/anfederico/Flaskex"
         }
-    stage("Cd") {
-        sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@$params.SSHNODE cd Flaskex "
-        }    
     stage("Pip install") {
-        sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@$params.SSHNODE pip3 install -r requirements.txt"
-        }   
+        sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@$params.SSHNODE 'cd Flaskex && pip3 install -r requirements.txt ' "
+        }      
     stage("Python") {
-        sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@$params.SSHNODE python3 app.py "
+        sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@$params.SSHNODE python3 Flaskex/app.py "
         }            
     }
 }
