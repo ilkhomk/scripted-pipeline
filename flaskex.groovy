@@ -24,10 +24,10 @@ node {
         sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@$params.SSHNODE cd Flaskex "
         }    
     stage("Pip install") {
-        sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@$params.SSHNODE pip install -r requirements.txt"
+        sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@$params.SSHNODE pip3 install -r requirements.txt"
         }   
     stage("Python") {
-        sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@$params.SSHNODE python app.py "
+        sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@$params.SSHNODE python3 app.py "
         }            
     }
 }
