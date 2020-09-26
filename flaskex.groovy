@@ -21,7 +21,7 @@ node {
         sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@$params.SSHNODE 'cd Flaskex && pip3 install -r requirements.txt ' "
         }      
     stage("Python") {
-        sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@$params.SSHNODE python3 Flaskex/app.py "
+        sh "ssh -o StrictHostKeyChecking=no -i $SSHKEY $SSHUSERNAME@$params.SSHNODE python3 Flaskex/app.py"
         }            
     }
 }
